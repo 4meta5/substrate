@@ -1038,6 +1038,7 @@ impl<T: Trait> Module<T> {
 				T::Hash::decode(&mut &storage_changes_root[..])
 					.expect("Node is configured to use the same hash; qed")
 			);
+			panic!("{:?}", item);
 			digest.push(item);
 		}
 
