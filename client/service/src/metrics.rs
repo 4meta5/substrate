@@ -186,7 +186,7 @@ struct ProcessInfo {
 
 pub struct MetricsService {
 	metrics: Option<PrometheusMetrics>,
-	#[cfg(all(any(unix, windows), not(target_os = "android")))]
+	#[cfg(all(any(unix, windows), not(all(target_os = "android", target_os = "ios"))))]
 	system: sysinfo::System,
 	pid: Option<sysinfo::Pid>,
 }
@@ -229,7 +229,7 @@ impl MetricsService {
 	}
 }
 
-#[cfg(all(any(unix, windows), not(target_os = "android"), not(target_os = "linux")))]
+#[cfg(all(any(unix, windows), not(all(target_os = "android", target_os = "ios", target_os = "linux"))))]
 impl MetricsService {
 	fn inner_new(metrics: Option<PrometheusMetrics>) -> Self {
 		Self {
@@ -280,7 +280,7 @@ impl MetricsService {
 		Self::inner_new(None)
 	}
 
-	#[cfg(all(any(unix, windows), not(target_os = "android")))]
+	#[cfg(all(any(unix, windows), not(all(target_os = "android", target_os = "ios"))))]
 	fn process_info_for(&mut self, pid: &sysinfo::Pid) -> ProcessInfo {
 		let mut info = ProcessInfo::default();
 		if self.system.refresh_process(*pid) {
